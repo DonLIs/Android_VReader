@@ -2,7 +2,6 @@ package me.donlis.vreader.view.main;
 
 import android.os.Bundle;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +16,12 @@ import me.donlis.vreader.base.AbstractBaseFragment;
 import me.donlis.vreader.base.AbstractSupportFragment;
 import me.donlis.vreader.databinding.FragmentMainBinding;
 import me.donlis.vreader.view.about.AboutFragment;
+import me.donlis.vreader.view.dynamics.DynamicsFragment;
 import me.donlis.vreader.view.home.HomeFragment;
 import me.donlis.vreader.view.section.SectionFragment;
 import me.donlis.vreader.viewmodel.MainViewModel;
 
-public class MainFragment extends AbstractSupportFragment<MainViewModel, FragmentMainBinding> {
+public class MainFragment extends AbstractBaseFragment<MainViewModel, FragmentMainBinding> {
 
     private ViewPager mViewPager;
 
@@ -39,11 +39,6 @@ public class MainFragment extends AbstractSupportFragment<MainViewModel, Fragmen
     }
 
     @Override
-    protected boolean isDisplayHomeAsUp() {
-        return false;
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -57,12 +52,13 @@ public class MainFragment extends AbstractSupportFragment<MainViewModel, Fragmen
     private void initView(){
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(HomeFragment.getInstance());
+        fragmentList.add(DynamicsFragment.getInstance());
         fragmentList.add(SectionFragment.getInstance());
         fragmentList.add(AboutFragment.getInstance());
 
         pagerAdapter = new MainViewPagerAdapter(getChildFragmentManager(), fragmentList);
         mViewPager.setAdapter(pagerAdapter);
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -86,10 +82,11 @@ public class MainFragment extends AbstractSupportFragment<MainViewModel, Fragmen
         int unselect_color = getResources().getColor(R.color.dark);
 
         NavBarTab nav_home = new NavBarTab(_mActivity,R.drawable.ic_home,"Home",primary_color,unselect_color);
+        NavBarTab nav_dynamics = new NavBarTab(_mActivity,R.drawable.ic_dynamics,"Dynamice",primary_color,unselect_color);
         NavBarTab nav_section = new NavBarTab(_mActivity,R.drawable.ic_section,"Section",primary_color,unselect_color);
         NavBarTab nav_about = new NavBarTab(_mActivity,R.drawable.ic_account,"About",primary_color,unselect_color);
 
-        mNavBar.addItem(nav_home).addItem(nav_section).addItem(nav_about);
+        mNavBar.addItem(nav_home).addItem(nav_dynamics).addItem(nav_section).addItem(nav_about);
         mNavBar.setOnTabSelectedListener(new NavBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position, int prePosition) {

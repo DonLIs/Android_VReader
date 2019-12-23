@@ -15,7 +15,8 @@ import me.donlis.vreader.R;
 import me.donlis.vreader.adapter.ArticleListAdapter;
 import me.donlis.vreader.base.AbstractBaseFragment;
 import me.donlis.vreader.bean.ArticlesBean;
-import me.donlis.vreader.bean.HomeListBean;
+import me.donlis.vreader.bean.BaseWanAndroidBean;
+import me.donlis.vreader.bean.DataBean;
 import me.donlis.vreader.databinding.FragmentArticleBinding;
 import me.donlis.vreader.view.webview.WebViewFragment;
 import me.donlis.vreader.viewmodel.ArticleViewModel;
@@ -107,9 +108,9 @@ public class ArticleFragment extends AbstractBaseFragment<ArticleViewModel, Frag
         viewModel.getHomeList().observe(this, observer);
     }
 
-    private Observer<HomeListBean> observer = new Observer<HomeListBean>() {
+    private Observer<BaseWanAndroidBean<DataBean>> observer = new Observer<BaseWanAndroidBean<DataBean>>() {
         @Override
-        public void onChanged(HomeListBean homeListBean) {
+        public void onChanged(BaseWanAndroidBean<DataBean> homeListBean) {
             if(bindView.swipeRefresh.isRefreshing()){
                 bindView.swipeRefresh.setRefreshing(false);
             }

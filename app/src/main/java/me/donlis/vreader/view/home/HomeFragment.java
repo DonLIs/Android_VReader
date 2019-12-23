@@ -13,12 +13,13 @@ import androidx.viewpager.widget.ViewPager;
 import me.donlis.vreader.R;
 import me.donlis.vreader.adapter.MainViewPagerAdapter;
 import me.donlis.vreader.base.AbstractBaseFragment;
+import me.donlis.vreader.base.AbstractSupportFragment;
 import me.donlis.vreader.databinding.FragmentHomeBinding;
 import me.donlis.vreader.view.home.article.ArticleFragment;
 import me.donlis.vreader.view.home.project.ProjectFragment;
 import me.donlis.vreader.viewmodel.HomeViewModel;
 
-public class HomeFragment extends AbstractBaseFragment<HomeViewModel, FragmentHomeBinding> {
+public class HomeFragment extends AbstractSupportFragment<HomeViewModel, FragmentHomeBinding> {
 
     private MainViewPagerAdapter pagerAdapter;
 
@@ -33,6 +34,11 @@ public class HomeFragment extends AbstractBaseFragment<HomeViewModel, FragmentHo
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_home;
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUp() {
+        return false;
     }
 
     @Override

@@ -19,4 +19,9 @@ public class Utils {
         throw new NullPointerException("should init first");
     }
 
+    public static int dip2px(float dp) {
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
 }

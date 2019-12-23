@@ -15,7 +15,8 @@ import me.donlis.vreader.R;
 import me.donlis.vreader.adapter.ProjectListAdapter;
 import me.donlis.vreader.base.AbstractBaseFragment;
 import me.donlis.vreader.bean.ArticlesBean;
-import me.donlis.vreader.bean.HomeListBean;
+import me.donlis.vreader.bean.BaseWanAndroidBean;
+import me.donlis.vreader.bean.DataBean;
 import me.donlis.vreader.databinding.FragmentProjectBinding;
 import me.donlis.vreader.view.webview.WebViewFragment;
 import me.donlis.vreader.viewmodel.ProjectViewModel;
@@ -103,9 +104,9 @@ public class ProjectFragment extends AbstractBaseFragment<ProjectViewModel, Frag
     }
 
     private void getProjectList(){
-        viewModel.getProjectList().observe(this, new Observer<HomeListBean>() {
+        viewModel.getProjectList().observe(this, new Observer<BaseWanAndroidBean<DataBean>>() {
             @Override
-            public void onChanged(HomeListBean homeListBean) {
+            public void onChanged(BaseWanAndroidBean<DataBean> homeListBean) {
                 if(bindView.swipeRefresh.isRefreshing()){
                     bindView.swipeRefresh.setRefreshing(false);
                 }

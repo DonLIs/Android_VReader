@@ -10,7 +10,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import me.donlis.vreader.bean.HomeListBean;
+import me.donlis.vreader.bean.BaseWanAndroidBean;
+import me.donlis.vreader.bean.DataBean;
 import me.donlis.vreader.http.HttpClient;
 
 public class ProjectViewModel extends AndroidViewModel {
@@ -23,18 +24,18 @@ public class ProjectViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public MutableLiveData<HomeListBean> getProjectList(){
-        final MutableLiveData<HomeListBean> listData = new MutableLiveData<>();
+    public MutableLiveData<BaseWanAndroidBean<DataBean>> getProjectList(){
+        final MutableLiveData<BaseWanAndroidBean<DataBean>> listData = new MutableLiveData<>();
         HttpClient.getWanAndroidServer().getProjectList(pager)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HomeListBean>() {
+                .subscribe(new Observer<BaseWanAndroidBean<DataBean>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(HomeListBean homeListBean) {
+                    public void onNext(BaseWanAndroidBean<DataBean> homeListBean) {
                         listData.setValue(homeListBean);
                     }
 

@@ -25,7 +25,7 @@
         <me.donlis.ui.navigate.NavBar
             android:id="@+id/navbar"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

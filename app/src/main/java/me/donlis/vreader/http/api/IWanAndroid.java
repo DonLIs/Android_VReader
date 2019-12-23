@@ -1,7 +1,8 @@
 package me.donlis.vreader.http.api;
 
 import io.reactivex.Observable;
-import me.donlis.vreader.bean.HomeListBean;
+import me.donlis.vreader.bean.BaseWanAndroidBean;
+import me.donlis.vreader.bean.DataBean;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -15,7 +16,7 @@ public interface IWanAndroid {
      * @param cid  体系id
      */
     @GET("article/list/{page}/json")
-    Observable<HomeListBean> getHomeList(@Path("page") int page, @Query("cid") Integer cid);
+    Observable<BaseWanAndroidBean<DataBean>> getHomeList(@Path("page") int page, @Query("cid") Integer cid);
 
     /**
      * 玩安卓，项目；列表
@@ -23,6 +24,6 @@ public interface IWanAndroid {
      * @param page 页码，从0开始
      */
     @GET("article/listproject/{page}/json")
-    Observable<HomeListBean> getProjectList(@Path("page") int page);
+    Observable<BaseWanAndroidBean<DataBean>> getProjectList(@Path("page") int page);
 
 }

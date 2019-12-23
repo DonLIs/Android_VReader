@@ -1,13 +1,18 @@
 package me.donlis.vreader.base;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.AndroidViewModel;
@@ -16,7 +21,7 @@ import me.donlis.vreader.databinding.ToolbarBinding;
 
 public abstract class AbstractSupportFragment<VM extends AndroidViewModel,VB extends ViewDataBinding> extends AbstractBaseFragment<VM,VB> {
 
-    protected ToolbarBinding toolbarBinding;
+    private ToolbarBinding toolbarBinding;
 
     @Nullable
     @Override
@@ -25,12 +30,20 @@ public abstract class AbstractSupportFragment<VM extends AndroidViewModel,VB ext
         if(view == null){
             return null;
         }
-        toolbarBinding = DataBindingUtil.inflate(_mActivity.getLayoutInflater(), R.layout.toolbar, null, false);
 
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 
         ViewGroup group = (ViewGroup) view.getRootView();
-        group.addView(toolbarBinding.getRoot(),0,lp);
+
+        ViewDataBinding toolBinding = setToolbar();
+
+        group.addView(toolBinding.getRoot(),0,lp);
+
+        return view;
+    }
+
+    protected ViewDataBinding setToolbar(){
+        toolbarBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.toolbar, null, false);
 
         _mActivity.setSupportActionBar(toolbarBinding.toolbar);
 
@@ -50,15 +63,24 @@ public abstract class AbstractSupportFragment<VM extends AndroidViewModel,VB ext
             }
         }
 
-        return view;
+        return toolbarBinding;
     }
 
     protected boolean isDisplayHomeAsUp(){
         return true;
     }
 
+    protected Toolbar getToolbar(){
+        if(toolbarBinding == null){
+            return null;
+        }
+        return toolbarBinding.toolbar;
+    }
+
     protected void setToolbarTitel(CharSequence title){
-        toolbarBinding.toolbar.setTitle(title);
+        if(getToolbar() != null){
+            getToolbar().setTitle(title);
+        }
     }
 
 }

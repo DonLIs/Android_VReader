@@ -11,14 +11,12 @@
         android:gravity="center_vertical"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:theme="@style/ToolbarStyle"
-            app:contentInsetStartWithNavigation="0dp"
-            app:popupTheme="@style/ToolbarMenuStyle"
-            app:titleTextAppearance="@style/titleText" />
+            style="@style/sectionTabStyle"
+            app:tabGravity="center"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
