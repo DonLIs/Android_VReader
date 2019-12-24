@@ -135,11 +135,11 @@ public class ArticleFragment extends AbstractBaseFragment<ArticleViewModel, Frag
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if(articleListAdapter != null){
             articleListAdapter.getData().clear();
             articleListAdapter = null;
         }
+        super.onDestroy();
     }
 
 }

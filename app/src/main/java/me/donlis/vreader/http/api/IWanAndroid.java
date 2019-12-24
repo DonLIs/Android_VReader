@@ -1,8 +1,12 @@
 package me.donlis.vreader.http.api;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import me.donlis.vreader.bean.BaseWanAndroidBean;
 import me.donlis.vreader.bean.DataBean;
+import me.donlis.vreader.bean.NavBean;
+import me.donlis.vreader.bean.TreeBean;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -25,5 +29,17 @@ public interface IWanAndroid {
      */
     @GET("article/listproject/{page}/json")
     Observable<BaseWanAndroidBean<DataBean>> getProjectList(@Path("page") int page);
+
+    /**
+     * 体系数据
+     */
+    @GET("tree/json")
+    Observable<BaseWanAndroidBean<List<TreeBean>>> getTree();
+
+    /**
+     * 导航数据
+     */
+    @GET("navi/json")
+    Observable<BaseWanAndroidBean<List<NavBean>>> getNavi();
 
 }

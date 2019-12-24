@@ -76,4 +76,5 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.1.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
+    implementation 'com.hyman:flowlayout-lib:1.1.2'
 }

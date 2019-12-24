@@ -2,11 +2,26 @@ package me.donlis.vreader.view.section.structure;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-import me.donlis.vreader.R;
-import me.donlis.vreader.base.AbstractBaseFragment;
+import java.util.List;
 
-public class StructureFragment extends AbstractBaseFragment {
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import me.donlis.common.util.Utils;
+import me.donlis.vreader.R;
+import me.donlis.vreader.adapter.StruListAdapter;
+import me.donlis.vreader.base.AbstractBaseFragment;
+import me.donlis.vreader.bean.BaseWanAndroidBean;
+import me.donlis.vreader.bean.TreeBean;
+import me.donlis.vreader.databinding.FragmentStructureBinding;
+import me.donlis.vreader.viewmodel.StruViewModel;
+import me.donlis.vreader.widget.SpaceItemDecoration;
+
+public class StructureFragment extends AbstractBaseFragment<StruViewModel, FragmentStructureBinding>
+        implements SwipeRefreshLayout.OnRefreshListener, StruListAdapter.OnTagClickListener {
+
+    private StruListAdapter struListAdapter;
 
     public static StructureFragment getInstance(){
         return new StructureFragment();
@@ -22,11 +37,76 @@ public class StructureFragment extends AbstractBaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         initView();
-
     }
 
     private void initView(){
+        struListAdapter = new StruListAdapter(_mActivity.getApplicationContext());
+        struListAdapter.setOnTagClickListener(this);
+        bindView.recycler.setLayoutManager(new LinearLayoutManager(_mActivity));
+        bindView.recycler.addItemDecoration(new SpaceItemDecoration(0, Utils.dip2px(10)));
+        bindView.recycler.setAdapter(struListAdapter);
 
+        bindView.swipeRefresh.setOnRefreshListener(this);
+    }
+
+    @Override
+    protected void loadData() {
+        getStruList();
+    }
+
+    @Override
+    public void onRefresh() {
+        bindView.swipeRefresh.setRefreshing(true);
+        getStruList();
+    }
+
+    private void getStruList(){
+        viewModel.getTree().observe(this, new Observer<BaseWanAndroidBean<List<TreeBean>>>() {
+            @Override
+            public void onChanged(BaseWanAndroidBean<List<TreeBean>> listBaseWanAndroidBean) {
+                if(bindView.swipeRefresh.isRefreshing()){
+                    bindView.swipeRefresh.setRefreshing(false);
+                }
+
+                if(listBaseWanAndroidBean == null){
+                    List<TreeBean> data = struListAdapter.getData();
+                    if(data == null || data.size() == 0){
+                        showFailView();
+                    }
+                }else{
+                    showContentView();
+                    struListAdapter.setNewData(listBaseWanAndroidBean.getData());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onClick(int position, int childPos) {
+        TreeBean.ChildrenBean bean = null;
+
+        TreeBean item = struListAdapter.getItem(position);
+        if(item != null){
+            List<TreeBean.ChildrenBean> children = item.getChildren();
+            if(children != null){
+                bean = children.get(childPos);
+            }
+        }
+
+        if(bean == null){
+            return;
+        }
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        if(struListAdapter != null){
+            struListAdapter.getData().clear();
+            struListAdapter = null;
+        }
+        super.onDestroy();
     }
 
 }

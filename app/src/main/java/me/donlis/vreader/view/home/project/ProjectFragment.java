@@ -132,11 +132,11 @@ public class ProjectFragment extends AbstractBaseFragment<ProjectViewModel, Frag
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if(projectListAdapter != null){
             projectListAdapter.getData().clear();
             projectListAdapter = null;
         }
+        super.onDestroy();
     }
 
 }

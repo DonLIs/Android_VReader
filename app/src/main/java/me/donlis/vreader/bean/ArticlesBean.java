@@ -1,6 +1,8 @@
 package me.donlis.vreader.bean;
 
-public class ArticlesBean {
+import java.io.Serializable;
+
+public class ArticlesBean implements Serializable {
 
     /**
      * apkLink : http://www.wanandroid.com/blogimgs/e8faab6b-ecb1-4bc2-af96-f7e5039032b3.apk
