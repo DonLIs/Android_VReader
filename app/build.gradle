@@ -44,6 +44,13 @@ android {
         generateTests false
         targetGenDirTests 'src/main/java'
     }
+
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = 'VReader.apk'
+            }
+    }
 }
 
 dependencies {
