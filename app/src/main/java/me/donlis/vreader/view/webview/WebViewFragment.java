@@ -15,14 +15,23 @@ import me.donlis.vreader.databinding.FragmentWebviewBinding;
 
 public class WebViewFragment extends SwipeSupportFragment<AndroidViewModel, FragmentWebviewBinding> {
 
+    private final static String TITLE = "title";
+
+    private final static String URL = "url";
+
     private String mUrl;
 
     private String mTitle;
 
     private WebView webView;
 
-    public static WebViewFragment getInstance(){
-        return new WebViewFragment();
+    public static WebViewFragment getInstance(String title,String url){
+        WebViewFragment fragment = new WebViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(TITLE,title);
+        bundle.putString(URL,url);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -39,8 +48,8 @@ public class WebViewFragment extends SwipeSupportFragment<AndroidViewModel, Frag
     private void getArgs(){
         Bundle bundle = getArguments();
         if(bundle != null){
-            mUrl = bundle.getString("url","");
-            mTitle = bundle.getString("title",getString(R.string.app_name));
+            mUrl = bundle.getString(URL,"");
+            mTitle = bundle.getString(TITLE,getString(R.string.app_name));
         }
     }
 

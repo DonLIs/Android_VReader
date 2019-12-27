@@ -1,5 +1,7 @@
 package me.donlis.vreader.adapter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -14,8 +16,8 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<String> titles;
 
-    public MainViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
-        super(fm, behavior);
+    public MainViewPagerAdapter(@NonNull FragmentManager fm) {
+        super(fm, MainViewPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
     public MainViewPagerAdapter(@NonNull FragmentManager fm,List<Fragment> fragments) {
@@ -27,6 +29,20 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
         super(fm, MainViewPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.fragments = fragments;
         this.titles = titles;
+    }
+
+    public void addTitle(String... args){
+        if(titles == null){
+            titles = new ArrayList<>();
+        }
+        titles.addAll(Arrays.asList(args));
+    }
+
+    public void addFragment(Fragment... args){
+        if(fragments == null){
+            fragments = new ArrayList<>();
+        }
+        fragments.addAll(Arrays.asList(args));
     }
 
     public void clear(){

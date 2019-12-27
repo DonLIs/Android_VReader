@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.util.List;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -83,13 +85,8 @@ public class ArticleFragment extends AbstractBaseFragment<ArticleViewModel, Frag
         if(bean == null){
             Toast.makeText(_mActivity,"数据异常",Toast.LENGTH_LONG).show();
         }else {
-            Bundle bundle = new Bundle();
+            WebViewFragment webViewFragment = WebViewFragment.getInstance(bean.getTitle(),bean.getLink());
 
-            bundle.putString("url", bean.getLink());
-            bundle.putString("title", bean.getTitle());
-
-            WebViewFragment webViewFragment = WebViewFragment.getInstance();
-            webViewFragment.setArguments(bundle);
             try{
                 ((SupportFragment) ((SupportFragment) getParentFragment()).getParentFragment()).start(webViewFragment);
             }catch (Exception e){
@@ -122,11 +119,17 @@ public class ArticleFragment extends AbstractBaseFragment<ArticleViewModel, Frag
                     articleListAdapter.loadMoreEnd();
                 }
             }else {
-                if(viewModel.getPager() == 0){
-                    showContentView();
-                    articleListAdapter.setNewData(homeListBean.getData().getDatas());
-                }else{
-                    articleListAdapter.addData(homeListBean.getData().getDatas());
+                List<ArticlesBean> datas = homeListBean.getData().getDatas();
+                if(datas == null || datas.size() == 0){
+                    articleListAdapter.loadMoreEnd();
+                }else {
+                    if (viewModel.getPager() == 0) {
+                        showContentView();
+                        articleListAdapter.setNewData(datas);
+                        articleListAdapter.disableLoadMoreIfNotFullPage();
+                    } else {
+                        articleListAdapter.addData(datas);
+                    }
                     articleListAdapter.loadMoreComplete();
                 }
             }

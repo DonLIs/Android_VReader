@@ -52,8 +52,8 @@ public class MainFragment extends AbstractBaseFragment<MainViewModel, FragmentMa
     private void initView(){
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(HomeFragment.getInstance());
-        fragmentList.add(DynamicsFragment.getInstance());
         fragmentList.add(SectionFragment.getInstance());
+        fragmentList.add(DynamicsFragment.getInstance());
         fragmentList.add(AboutFragment.getInstance());
 
         pagerAdapter = new MainViewPagerAdapter(getChildFragmentManager(), fragmentList);
@@ -82,11 +82,11 @@ public class MainFragment extends AbstractBaseFragment<MainViewModel, FragmentMa
         int unselect_color = getResources().getColor(R.color.dark);
 
         NavBarTab nav_home = new NavBarTab(_mActivity,R.drawable.ic_home,"Home",primary_color,unselect_color);
-        NavBarTab nav_dynamics = new NavBarTab(_mActivity,R.drawable.ic_dynamics,"Dynamice",primary_color,unselect_color);
         NavBarTab nav_section = new NavBarTab(_mActivity,R.drawable.ic_section,"Section",primary_color,unselect_color);
+        NavBarTab nav_dynamics = new NavBarTab(_mActivity,R.drawable.ic_dynamics,"Dynamice",primary_color,unselect_color);
         NavBarTab nav_about = new NavBarTab(_mActivity,R.drawable.ic_account,"About",primary_color,unselect_color);
 
-        mNavBar.addItem(nav_home).addItem(nav_dynamics).addItem(nav_section).addItem(nav_about);
+        mNavBar.addItem(nav_home).addItem(nav_section).addItem(nav_dynamics).addItem(nav_about);
         mNavBar.setOnTabSelectedListener(new NavBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position, int prePosition) {

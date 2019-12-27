@@ -100,13 +100,8 @@ public class NavigateFragment extends AbstractBaseFragment<NavigateViewModel, Fr
         if(bean == null){
             Toast.makeText(_mActivity,"数据异常",Toast.LENGTH_LONG).show();
         }else {
-            Bundle bundle = new Bundle();
+            WebViewFragment webViewFragment = WebViewFragment.getInstance(bean.getTitle(),bean.getLink());
 
-            bundle.putString("url", bean.getLink());
-            bundle.putString("title", bean.getTitle());
-
-            WebViewFragment webViewFragment = WebViewFragment.getInstance();
-            webViewFragment.setArguments(bundle);
             try{
                 ((SupportFragment) ((SupportFragment) getParentFragment()).getParentFragment()).start(webViewFragment);
             }catch (Exception e){

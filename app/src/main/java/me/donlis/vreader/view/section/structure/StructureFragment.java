@@ -15,8 +15,10 @@ import me.donlis.vreader.base.AbstractBaseFragment;
 import me.donlis.vreader.bean.BaseWanAndroidBean;
 import me.donlis.vreader.bean.TreeBean;
 import me.donlis.vreader.databinding.FragmentStructureBinding;
+import me.donlis.vreader.view.section.group.GroupsFragment;
 import me.donlis.vreader.viewmodel.StruViewModel;
 import me.donlis.vreader.widget.SpaceItemDecoration;
+import me.yokeyword.fragmentation.SupportFragment;
 
 public class StructureFragment extends AbstractBaseFragment<StruViewModel, FragmentStructureBinding>
         implements SwipeRefreshLayout.OnRefreshListener, StruListAdapter.OnTagClickListener {
@@ -97,7 +99,12 @@ public class StructureFragment extends AbstractBaseFragment<StruViewModel, Fragm
             return;
         }
 
-
+        GroupsFragment groupsFragment = GroupsFragment.getInstance(bean.getId(), item);
+        try{
+            ((SupportFragment) ((SupportFragment) getParentFragment()).getParentFragment()).start(groupsFragment);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

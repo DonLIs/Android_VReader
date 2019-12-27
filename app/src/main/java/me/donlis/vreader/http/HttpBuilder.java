@@ -1,10 +1,13 @@
 package me.donlis.vreader.http;
 
+import static me.donlis.vreader.http.API.API_MXNZP;
 import static me.donlis.vreader.http.API.API_WAN_ANDROID;
 
 public class HttpBuilder {
 
     private Object wanandroidHttps;
+
+    private Object mxnzpHttps;
 
     private HttpBuilder(){}
 
@@ -29,6 +32,16 @@ public class HttpBuilder {
                     }
                 }
                 return (T) wanandroidHttps;
+
+            case API_MXNZP:
+                if(mxnzpHttps == null){
+                    synchronized (HttpBuilder.class){
+                        if(mxnzpHttps == null){
+                            mxnzpHttps = HttpUtils.getInstance().build(url).create(tClass);
+                        }
+                    }
+                }
+                return (T) mxnzpHttps;
 
             default:
                 return null;
