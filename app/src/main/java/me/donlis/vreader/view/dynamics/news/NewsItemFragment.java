@@ -127,6 +127,11 @@ public class NewsItemFragment extends AbstractBaseFragment<MzNewsViewModel, Frag
         getNewsList();
     }
 
+    @Override
+    protected void onReLoad() {
+        viewModel.reset();
+        getNewsList();
+    }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

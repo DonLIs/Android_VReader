@@ -5,7 +5,6 @@ import android.os.Handler;
 
 import androidx.annotation.Nullable;
 import me.donlis.vreader.R;
-import me.donlis.vreader.base.AbstractBaseFragment;
 import me.donlis.vreader.base.AbstractSupportFragment;
 
 public class AboutFragment extends AbstractSupportFragment {

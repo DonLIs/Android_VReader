@@ -91,6 +91,12 @@ public class GroupDetailFragment extends AbstractBaseFragment<GroupDetailViewMod
         getList();
     }
 
+    @Override
+    protected void onReLoad() {
+        viewModel.reset();
+        getList();
+    }
+
     private void getList(){
         viewModel.getData(groudId).observe(this, new Observer<BaseWanAndroidBean<DataBean>>() {
             @Override

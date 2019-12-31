@@ -5,7 +5,6 @@ import android.app.Application;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,7 +14,7 @@ import me.donlis.vreader.bean.BaseWanAndroidBean;
 import me.donlis.vreader.bean.TreeBean;
 import me.donlis.vreader.http.HttpClient;
 
-public class StruViewModel extends AndroidViewModel {
+public class StruViewModel extends BaseViewModel {
 
     public StruViewModel(@NonNull Application application) {
         super(application);
@@ -29,7 +28,7 @@ public class StruViewModel extends AndroidViewModel {
                 .subscribe(new Observer<BaseWanAndroidBean<List<TreeBean>>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        addDisposable(d);
                     }
 
                     @Override

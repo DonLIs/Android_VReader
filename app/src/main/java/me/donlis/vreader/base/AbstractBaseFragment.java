@@ -15,13 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import me.donlis.vreader.R;
 import me.donlis.vreader.util.ClassUtil;
+import me.donlis.vreader.viewmodel.BaseViewModel;
 import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
 
-public abstract class AbstractBaseFragment<VM extends AndroidViewModel,VB extends ViewDataBinding> extends SwipeBackFragment {
+public abstract class AbstractBaseFragment<VM extends BaseViewModel,VB extends ViewDataBinding> extends SwipeBackFragment {
 
     protected VM viewModel;
 
@@ -225,5 +225,13 @@ public abstract class AbstractBaseFragment<VM extends AndroidViewModel,VB extend
         if(emptyView != null && emptyView.getVisibility() == View.GONE){
             emptyView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if(viewModel != null){
+            viewModel.dispose();
+        }
+        super.onDestroy();
     }
 }

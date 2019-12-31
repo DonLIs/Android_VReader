@@ -3,16 +3,14 @@ package me.donlis.vreader.view.main;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.AndroidViewModel;
 import me.donlis.vreader.R;
 import me.donlis.vreader.anim.HorizontalAnimator;
-import me.donlis.vreader.base.AbstractBaseActivity;
 import me.donlis.vreader.base.AbstractToolbarLessActivity;
 import me.donlis.vreader.databinding.ActivityMainBinding;
+import me.donlis.vreader.viewmodel.BaseViewModel;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
-public class MainActivity extends AbstractToolbarLessActivity<AndroidViewModel,ActivityMainBinding> {
+public class MainActivity extends AbstractToolbarLessActivity<BaseViewModel,ActivityMainBinding> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

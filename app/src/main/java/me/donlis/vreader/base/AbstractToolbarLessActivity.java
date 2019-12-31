@@ -9,10 +9,10 @@ import com.google.android.material.appbar.AppBarLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.AndroidViewModel;
 import me.donlis.vreader.R;
+import me.donlis.vreader.viewmodel.BaseViewModel;
 
-public abstract class AbstractToolbarLessActivity<VM extends AndroidViewModel,VB extends ViewDataBinding>
+public abstract class AbstractToolbarLessActivity<VM extends BaseViewModel,VB extends ViewDataBinding>
         extends AbstractBaseActivity<VM,VB> {
 
     @Override

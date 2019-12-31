@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.AndroidViewModel;
 import me.donlis.vreader.R;
 import me.donlis.vreader.adapter.MainViewPagerAdapter;
 import me.donlis.vreader.base.AbstractSupportFragment;
@@ -21,8 +20,9 @@ import me.donlis.vreader.databinding.FragmentSectionBinding;
 import me.donlis.vreader.databinding.ToolbarSectionBinding;
 import me.donlis.vreader.view.section.navigate.NavigateFragment;
 import me.donlis.vreader.view.section.structure.StructureFragment;
+import me.donlis.vreader.viewmodel.BaseViewModel;
 
-public class SectionFragment extends AbstractSupportFragment<AndroidViewModel, FragmentSectionBinding> {
+public class SectionFragment extends AbstractSupportFragment<BaseViewModel, FragmentSectionBinding> {
 
     private ToolbarSectionBinding toolbarBinding;
 

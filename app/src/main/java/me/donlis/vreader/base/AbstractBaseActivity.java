@@ -20,14 +20,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import me.donlis.vreader.R;
 import me.donlis.vreader.databinding.ActivityBaseBinding;
 import me.donlis.vreader.util.ClassUtil;
+import me.donlis.vreader.viewmodel.BaseViewModel;
 import me.yokeyword.fragmentation.SupportActivity;
 
-public abstract class AbstractBaseActivity<VM extends AndroidViewModel,VB extends ViewDataBinding> extends SupportActivity {
+public abstract class AbstractBaseActivity<VM extends BaseViewModel,VB extends ViewDataBinding> extends SupportActivity {
 
     protected VM viewModel;
 
@@ -170,5 +170,13 @@ public abstract class AbstractBaseActivity<VM extends AndroidViewModel,VB extend
         config.setToDefaults();
         res.updateConfiguration(config, res.getDisplayMetrics());
         return res;
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(viewModel != null){
+            viewModel.dispose();
+        }
+        super.onDestroy();
     }
 }

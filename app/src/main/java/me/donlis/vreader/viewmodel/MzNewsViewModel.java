@@ -5,7 +5,6 @@ import android.app.Application;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,7 +16,7 @@ import me.donlis.vreader.bean.NewsItem;
 import me.donlis.vreader.bean.NewsType;
 import me.donlis.vreader.http.HttpClient;
 
-public class MzNewsViewModel extends AndroidViewModel {
+public class MzNewsViewModel extends BaseViewModel {
 
     private final int DEFAULT_PAGER = 0;
 
@@ -34,7 +33,7 @@ public class MzNewsViewModel extends AndroidViewModel {
                 .subscribe(new Observer<BaseMzBean<List<NewsType>>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        addDisposable(d);
                     }
 
                     @Override
@@ -62,7 +61,7 @@ public class MzNewsViewModel extends AndroidViewModel {
                 .subscribe(new Observer<BaseMzBean<List<NewsItem>>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        addDisposable(d);
                     }
 
                     @Override
@@ -90,7 +89,7 @@ public class MzNewsViewModel extends AndroidViewModel {
                 .subscribe(new Observer<BaseMzBean<NewsDetail>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        addDisposable(d);
                     }
 
                     @Override

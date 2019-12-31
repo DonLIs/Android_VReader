@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.AndroidViewModel;
+import me.donlis.vreader.viewmodel.BaseViewModel;
 
-public abstract class SwipeSupportFragment<VM extends AndroidViewModel,VB extends ViewDataBinding> extends AbstractSupportFragment<VM,VB> {
+public abstract class SwipeSupportFragment<VM extends BaseViewModel,VB extends ViewDataBinding> extends AbstractSupportFragment<VM,VB> {
 
     @Nullable
     @Override

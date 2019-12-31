@@ -64,6 +64,11 @@ public class NavigateFragment extends AbstractBaseFragment<NavigateViewModel, Fr
         getNavList();
     }
 
+    @Override
+    protected void onReLoad() {
+        getNavList();
+    }
+
     private void getNavList(){
         viewModel.getNav().observe(this, new Observer<BaseWanAndroidBean<List<NavBean>>>() {
             @Override

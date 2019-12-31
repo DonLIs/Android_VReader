@@ -13,15 +13,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.AndroidViewModel;
 import me.donlis.vreader.R;
 import me.donlis.vreader.adapter.MainViewPagerAdapter;
 import me.donlis.vreader.base.AbstractSupportFragment;
 import me.donlis.vreader.bean.TreeBean;
 import me.donlis.vreader.databinding.FragmentGroupsBinding;
 import me.donlis.vreader.databinding.ToolbarGroupsBinding;
+import me.donlis.vreader.viewmodel.BaseViewModel;
 
-public class GroupsFragment extends AbstractSupportFragment<AndroidViewModel, FragmentGroupsBinding> {
+public class GroupsFragment extends AbstractSupportFragment<BaseViewModel, FragmentGroupsBinding> {
 
     private final static String SELECTID = "selectid";
 

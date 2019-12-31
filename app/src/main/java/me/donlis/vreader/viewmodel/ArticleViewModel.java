@@ -3,7 +3,6 @@ package me.donlis.vreader.viewmodel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -13,7 +12,7 @@ import me.donlis.vreader.bean.BaseWanAndroidBean;
 import me.donlis.vreader.bean.DataBean;
 import me.donlis.vreader.http.HttpClient;
 
-public class ArticleViewModel extends AndroidViewModel {
+public class ArticleViewModel extends BaseViewModel {
 
     private final int DEFAULT_PAGER = 0;
 
@@ -30,7 +29,7 @@ public class ArticleViewModel extends AndroidViewModel {
                 .subscribe(new Observer<BaseWanAndroidBean<DataBean>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        addDisposable(d);
                     }
 
                     @Override

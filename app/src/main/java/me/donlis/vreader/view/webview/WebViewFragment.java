@@ -8,12 +8,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.AndroidViewModel;
 import me.donlis.vreader.R;
 import me.donlis.vreader.base.SwipeSupportFragment;
 import me.donlis.vreader.databinding.FragmentWebviewBinding;
+import me.donlis.vreader.viewmodel.BaseViewModel;
 
-public class WebViewFragment extends SwipeSupportFragment<AndroidViewModel, FragmentWebviewBinding> {
+public class WebViewFragment extends SwipeSupportFragment<BaseViewModel, FragmentWebviewBinding> {
 
     private final static String TITLE = "title";
 
