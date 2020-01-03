@@ -16,13 +16,23 @@ import me.donlis.vreader.http.HttpClient;
 
 public class NavigateViewModel extends BaseViewModel {
 
+    private MutableLiveData<BaseWanAndroidBean<List<NavBean>>> listData;
+
     public NavigateViewModel(@NonNull Application application) {
         super(application);
     }
 
     public MutableLiveData<BaseWanAndroidBean<List<NavBean>>> getNav(){
-        final MutableLiveData<BaseWanAndroidBean<List<NavBean>>> listData = new MutableLiveData<>();
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
+        return listData;
+    }
 
+    public void loadNav(){
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
         HttpClient.getWanAndroidServer().getNavi()
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseWanAndroidBean<List<NavBean>>>() {
@@ -46,7 +56,6 @@ public class NavigateViewModel extends BaseViewModel {
 
                     }
                 });
-        return listData;
     }
 
 }

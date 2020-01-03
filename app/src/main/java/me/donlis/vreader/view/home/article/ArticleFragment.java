@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -103,6 +104,7 @@ public class ArticleFragment extends AbstractBaseFragment<ArticleViewModel, Frag
 
     private void getHomeList(){
         viewModel.getHomeList().observe(this, observer);
+        viewModel.loadHomeList();
     }
 
     private Observer<BaseWanAndroidBean<DataBean>> observer = new Observer<BaseWanAndroidBean<DataBean>>() {
@@ -138,6 +140,9 @@ public class ArticleFragment extends AbstractBaseFragment<ArticleViewModel, Frag
 
     @Override
     public void onDestroy() {
+        if(viewModel.getHomeList() != null){
+            viewModel.getHomeList().removeObserver(observer);
+        }
         if(articleListAdapter != null){
             articleListAdapter.getData().clear();
             articleListAdapter = null;

@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -87,32 +88,35 @@ public class NewsItemFragment extends AbstractBaseFragment<MzNewsViewModel, Frag
     }
 
     private void getNewsList(){
-        viewModel.getNewsList(typeId).observe(this, new Observer<BaseMzBean<List<NewsItem>>>() {
-            @Override
-            public void onChanged(BaseMzBean<List<NewsItem>> listBaseMzBean) {
-                if(bindView.swipeRefresh.isRefreshing()){
-                    bindView.swipeRefresh.setRefreshing(false);
-                }
-
-                if(listBaseMzBean == null){
-                    if(viewModel.getPager() == 0){
-                        showFailView();
-                    }else{
-                        adapter.loadMoreEnd();
-                    }
-                }else{
-                    if(viewModel.getPager() == 0){
-                        showContentView();
-                        adapter.setNewData(listBaseMzBean.getData());
-                        adapter.disableLoadMoreIfNotFullPage();
-                    }else{
-                        adapter.addData(listBaseMzBean.getData());
-                    }
-                    adapter.loadMoreComplete();
-                }
-            }
-        });
+        viewModel.getNewsList().observe(this, observer);
+        viewModel.loadNewsList(typeId);
     }
+
+    private Observer<BaseMzBean<List<NewsItem>>> observer = new Observer<BaseMzBean<List<NewsItem>>>() {
+        @Override
+        public void onChanged(BaseMzBean<List<NewsItem>> listBaseMzBean) {
+            if(bindView.swipeRefresh.isRefreshing()){
+                bindView.swipeRefresh.setRefreshing(false);
+            }
+
+            if(listBaseMzBean == null){
+                if(viewModel.getPager() == 0){
+                    showFailView();
+                }else{
+                    adapter.loadMoreEnd();
+                }
+            }else{
+                if(viewModel.getPager() == 0){
+                    showContentView();
+                    adapter.setNewData(listBaseMzBean.getData());
+                    adapter.disableLoadMoreIfNotFullPage();
+                }else{
+                    adapter.addData(listBaseMzBean.getData());
+                }
+                adapter.loadMoreComplete();
+            }
+        }
+    };
 
     @Override
     public void onRefresh() {
@@ -143,6 +147,9 @@ public class NewsItemFragment extends AbstractBaseFragment<MzNewsViewModel, Frag
 
     @Override
     public void onDestroy() {
+        if(viewModel.getNewsList() != null){
+            viewModel.getNewsList().removeObserver(observer);
+        }
         if(adapter != null){
             adapter.getData().clear();
             adapter = null;

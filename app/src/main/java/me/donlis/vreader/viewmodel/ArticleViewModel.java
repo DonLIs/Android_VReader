@@ -18,12 +18,23 @@ public class ArticleViewModel extends BaseViewModel {
 
     private int pager = DEFAULT_PAGER;
 
+    private MutableLiveData<BaseWanAndroidBean<DataBean>> listData;
+
     public ArticleViewModel(@NonNull Application application) {
         super(application);
     }
 
     public MutableLiveData<BaseWanAndroidBean<DataBean>> getHomeList(){
-        final MutableLiveData<BaseWanAndroidBean<DataBean>> listData = new MutableLiveData<>();
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
+        return listData;
+    }
+
+    public void loadHomeList(){
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
         HttpClient.getWanAndroidServer().getHomeList(pager,null)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseWanAndroidBean<DataBean>>() {
@@ -47,7 +58,6 @@ public class ArticleViewModel extends BaseViewModel {
 
                     }
                 });
-        return listData;
     }
 
     public int getPager() {

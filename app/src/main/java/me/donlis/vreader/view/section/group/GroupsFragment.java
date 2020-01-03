@@ -13,13 +13,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import me.donlis.common.util.Utils;
 import me.donlis.vreader.R;
 import me.donlis.vreader.adapter.MainViewPagerAdapter;
 import me.donlis.vreader.base.AbstractSupportFragment;
 import me.donlis.vreader.bean.TreeBean;
 import me.donlis.vreader.databinding.FragmentGroupsBinding;
 import me.donlis.vreader.databinding.ToolbarGroupsBinding;
+import me.donlis.vreader.util.StatusBarUtil;
 import me.donlis.vreader.viewmodel.BaseViewModel;
+import me.donlis.vreader.widget.StatusView;
 
 public class GroupsFragment extends AbstractSupportFragment<BaseViewModel, FragmentGroupsBinding> {
 
@@ -67,6 +70,9 @@ public class GroupsFragment extends AbstractSupportFragment<BaseViewModel, Fragm
     @Override
     protected ViewDataBinding setToolbar() {
         toolbarBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.toolbar_groups,null,false);
+
+        toolbarBinding.appBarLayout.setPadding(0,Utils.dip2px(24),0,0);
+
         _mActivity.setSupportActionBar(toolbarBinding.toolbar);
         ActionBar actionBar = _mActivity.getSupportActionBar();
         if (actionBar != null) {

@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProviders;
 import me.donlis.vreader.R;
 import me.donlis.vreader.databinding.ActivityBaseBinding;
 import me.donlis.vreader.util.ClassUtil;
+import me.donlis.vreader.util.StatusBarUtil;
 import me.donlis.vreader.viewmodel.BaseViewModel;
 import me.yokeyword.fragmentation.SupportActivity;
 
@@ -43,22 +44,8 @@ public abstract class AbstractBaseActivity<VM extends BaseViewModel,VB extends V
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setStatusBarTransparent();
         super.onCreate(savedInstanceState);
-        initSystemBarTint();
-    }
-
-    /**
-     * 初始化窗口和状态栏，沉浸式窗口
-     */
-    private void initSystemBarTint() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
     }
 
     @Override
@@ -85,6 +72,8 @@ public abstract class AbstractBaseActivity<VM extends BaseViewModel,VB extends V
         setToolBar(mBaseBining.header.toolbar);
 
         initViewModel();
+
+        StatusBarUtil.setBarColor(this,Color.TRANSPARENT);
     }
 
     /**
@@ -170,6 +159,16 @@ public abstract class AbstractBaseActivity<VM extends BaseViewModel,VB extends V
         config.setToDefaults();
         res.updateConfiguration(config, res.getDisplayMetrics());
         return res;
+    }
+
+    private void setStatusBarTransparent() {
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams winParams = window.getAttributes();
+            final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            winParams.flags |= bits;
+            window.setAttributes(winParams);
+        }
     }
 
     @Override

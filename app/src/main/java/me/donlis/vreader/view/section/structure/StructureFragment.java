@@ -5,6 +5,7 @@ import android.os.Bundle;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -63,25 +64,28 @@ public class StructureFragment extends AbstractBaseFragment<StruViewModel, Fragm
     }
 
     private void getStruList(){
-        viewModel.getTree().observe(this, new Observer<BaseWanAndroidBean<List<TreeBean>>>() {
-            @Override
-            public void onChanged(BaseWanAndroidBean<List<TreeBean>> listBaseWanAndroidBean) {
-                if(bindView.swipeRefresh.isRefreshing()){
-                    bindView.swipeRefresh.setRefreshing(false);
-                }
-
-                if(listBaseWanAndroidBean == null){
-                    List<TreeBean> data = struListAdapter.getData();
-                    if(data == null || data.size() == 0){
-                        showFailView();
-                    }
-                }else{
-                    showContentView();
-                    struListAdapter.setNewData(listBaseWanAndroidBean.getData());
-                }
-            }
-        });
+        viewModel.getTree().observe(this, observer);
+        viewModel.loadTree();
     }
+
+    private Observer<BaseWanAndroidBean<List<TreeBean>>> observer = new Observer<BaseWanAndroidBean<List<TreeBean>>>() {
+        @Override
+        public void onChanged(BaseWanAndroidBean<List<TreeBean>> listBaseWanAndroidBean) {
+            if(bindView.swipeRefresh.isRefreshing()){
+                bindView.swipeRefresh.setRefreshing(false);
+            }
+
+            if(listBaseWanAndroidBean == null){
+                List<TreeBean> data = struListAdapter.getData();
+                if(data == null || data.size() == 0){
+                    showFailView();
+                }
+            }else{
+                showContentView();
+                struListAdapter.setNewData(listBaseWanAndroidBean.getData());
+            }
+        }
+    };
 
     @Override
     public void onClick(int position, int childPos) {
@@ -109,6 +113,9 @@ public class StructureFragment extends AbstractBaseFragment<StruViewModel, Fragm
 
     @Override
     public void onDestroy() {
+        if(viewModel.getTree() != null){
+            viewModel.getTree().removeObserver(observer);
+        }
         if(struListAdapter != null){
             struListAdapter.getData().clear();
             struListAdapter = null;

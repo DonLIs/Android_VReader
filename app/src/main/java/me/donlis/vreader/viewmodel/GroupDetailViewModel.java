@@ -18,12 +18,23 @@ public class GroupDetailViewModel extends BaseViewModel {
 
     private int pager = DEFAULT_PAGER;
 
+    private MutableLiveData<BaseWanAndroidBean<DataBean>> listData;
+
     public GroupDetailViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public MutableLiveData<BaseWanAndroidBean<DataBean>> getData(Integer cid){
-        final MutableLiveData<BaseWanAndroidBean<DataBean>> listData = new MutableLiveData<>();
+    public MutableLiveData<BaseWanAndroidBean<DataBean>> getData(){
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
+        return listData;
+    }
+
+    public void loadData(Integer cid){
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
         HttpClient.getWanAndroidServer().getHomeList(pager,cid)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseWanAndroidBean<DataBean>>() {
@@ -47,7 +58,6 @@ public class GroupDetailViewModel extends BaseViewModel {
 
                     }
                 });
-        return listData;
     }
 
     public int getPager() {

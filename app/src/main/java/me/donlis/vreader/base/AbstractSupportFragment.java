@@ -11,9 +11,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import me.donlis.common.util.Utils;
 import me.donlis.vreader.R;
 import me.donlis.vreader.databinding.ToolbarBinding;
+import me.donlis.vreader.util.StatusBarUtil;
 import me.donlis.vreader.viewmodel.BaseViewModel;
+import me.donlis.vreader.widget.StatusView;
 
 public abstract class AbstractSupportFragment<VM extends BaseViewModel,VB extends ViewDataBinding> extends AbstractBaseFragment<VM,VB> {
 
@@ -40,6 +43,8 @@ public abstract class AbstractSupportFragment<VM extends BaseViewModel,VB extend
 
     protected ViewDataBinding setToolbar(){
         toolbarBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.toolbar, null, false);
+
+        toolbarBinding.appBarLayout.setPadding(0,Utils.dip2px(24),0,0);
 
         _mActivity.setSupportActionBar(toolbarBinding.toolbar);
 

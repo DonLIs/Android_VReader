@@ -1,15 +1,15 @@
 package me.donlis.vreader.view.about;
 
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.annotation.Nullable;
 import me.donlis.vreader.R;
-import me.donlis.vreader.base.AbstractSupportFragment;
+import me.donlis.vreader.base.AbstractBaseFragment;
+import me.donlis.vreader.databinding.ToolbarAboutBinding;
 
-public class AboutFragment extends AbstractSupportFragment {
+public class AboutFragment extends AbstractBaseFragment {
 
-    private Handler handler = new Handler();
+    private ToolbarAboutBinding toolbarBinding;
 
     public static AboutFragment getInstance(){
         return new AboutFragment();
@@ -21,11 +21,6 @@ public class AboutFragment extends AbstractSupportFragment {
     }
 
     @Override
-    protected boolean isDisplayHomeAsUp() {
-        return false;
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -33,12 +28,7 @@ public class AboutFragment extends AbstractSupportFragment {
 
     @Override
     protected void loadData() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showContentView();
-            }
-        }, 1500);
+        showContentView();
     }
 
 }

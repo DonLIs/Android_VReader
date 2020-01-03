@@ -6,6 +6,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -70,25 +71,28 @@ public class NavigateFragment extends AbstractBaseFragment<NavigateViewModel, Fr
     }
 
     private void getNavList(){
-        viewModel.getNav().observe(this, new Observer<BaseWanAndroidBean<List<NavBean>>>() {
-            @Override
-            public void onChanged(BaseWanAndroidBean<List<NavBean>> listBaseWanAndroidBean) {
-                if(bindView.swipeRefresh.isRefreshing()){
-                    bindView.swipeRefresh.setRefreshing(false);
-                }
-
-                if(listBaseWanAndroidBean == null){
-                    List<NavBean> data = naviListAdapter.getData();
-                    if(data == null || data.size() == 0){
-                        showFailView();
-                    }
-                }else{
-                    showContentView();
-                    naviListAdapter.setNewData(listBaseWanAndroidBean.getData());
-                }
-            }
-        });
+        viewModel.getNav().observe(this, observer);
+        viewModel.loadNav();
     }
+
+    private Observer<BaseWanAndroidBean<List<NavBean>>> observer = new Observer<BaseWanAndroidBean<List<NavBean>>>() {
+        @Override
+        public void onChanged(BaseWanAndroidBean<List<NavBean>> listBaseWanAndroidBean) {
+            if(bindView.swipeRefresh.isRefreshing()){
+                bindView.swipeRefresh.setRefreshing(false);
+            }
+
+            if(listBaseWanAndroidBean == null){
+                List<NavBean> data = naviListAdapter.getData();
+                if(data == null || data.size() == 0){
+                    showFailView();
+                }
+            }else{
+                showContentView();
+                naviListAdapter.setNewData(listBaseWanAndroidBean.getData());
+            }
+        }
+    };
 
     @Override
     public void onClick(int position, int childPos) {
@@ -117,6 +121,9 @@ public class NavigateFragment extends AbstractBaseFragment<NavigateViewModel, Fr
 
     @Override
     public void onDestroy() {
+        if(viewModel.getNav() != null){
+            viewModel.getNav().removeObserver(observer);
+        }
         if(naviListAdapter != null){
             naviListAdapter.getData().clear();
             naviListAdapter = null;

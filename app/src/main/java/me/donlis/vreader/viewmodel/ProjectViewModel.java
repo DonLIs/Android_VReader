@@ -19,12 +19,23 @@ public class ProjectViewModel extends BaseViewModel {
 
     private int pager = DEFAULT_PAGER;
 
+    private MutableLiveData<BaseWanAndroidBean<DataBean>> listData;
+
     public ProjectViewModel(@NonNull Application application) {
         super(application);
     }
 
     public MutableLiveData<BaseWanAndroidBean<DataBean>> getProjectList(){
-        final MutableLiveData<BaseWanAndroidBean<DataBean>> listData = new MutableLiveData<>();
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
+        return listData;
+    }
+
+    public void loadProjectList(){
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
         HttpClient.getWanAndroidServer().getProjectList(pager)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseWanAndroidBean<DataBean>>() {
@@ -48,7 +59,6 @@ public class ProjectViewModel extends BaseViewModel {
 
                     }
                 });
-        return listData;
     }
 
     public int getPager() {

@@ -13,14 +13,17 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import me.donlis.common.util.Utils;
 import me.donlis.vreader.R;
 import me.donlis.vreader.adapter.MainViewPagerAdapter;
 import me.donlis.vreader.base.AbstractSupportFragment;
 import me.donlis.vreader.databinding.FragmentSectionBinding;
 import me.donlis.vreader.databinding.ToolbarSectionBinding;
+import me.donlis.vreader.util.StatusBarUtil;
 import me.donlis.vreader.view.section.navigate.NavigateFragment;
 import me.donlis.vreader.view.section.structure.StructureFragment;
 import me.donlis.vreader.viewmodel.BaseViewModel;
+import me.donlis.vreader.widget.StatusView;
 
 public class SectionFragment extends AbstractSupportFragment<BaseViewModel, FragmentSectionBinding> {
 
@@ -55,6 +58,7 @@ public class SectionFragment extends AbstractSupportFragment<BaseViewModel, Frag
     protected ViewDataBinding setToolbar() {
         toolbarBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.toolbar_section,null,false);
 
+        toolbarBinding.appBarLayout.setPadding(0,Utils.dip2px(24),0,0);
         return toolbarBinding;
     }
 

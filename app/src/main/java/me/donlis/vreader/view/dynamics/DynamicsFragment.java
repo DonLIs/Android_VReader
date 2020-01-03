@@ -82,19 +82,22 @@ public class DynamicsFragment extends AbstractSupportFragment<MzNewsViewModel, F
     }
 
     private void getNewTypeList(){
-        viewModel.getNewsType().observe(this, new Observer<BaseMzBean<List<NewsType>>>() {
-            @Override
-            public void onChanged(BaseMzBean<List<NewsType>> newsTypeBaseMzBean) {
-                if(newsTypeBaseMzBean == null){
-                    showFailView();
-                }else{
-                    showContentView();
-                    newsTypeList.setValue(newsTypeBaseMzBean.getData());
-                    createView();
-                }
-            }
-        });
+        viewModel.getNewsType().observe(this, observer);
+        viewModel.loadNewsType();
     }
+
+    private Observer<BaseMzBean<List<NewsType>>> observer = new Observer<BaseMzBean<List<NewsType>>>() {
+        @Override
+        public void onChanged(BaseMzBean<List<NewsType>> newsTypeBaseMzBean) {
+            if(newsTypeBaseMzBean == null){
+                showFailView();
+            }else{
+                showContentView();
+                newsTypeList.setValue(newsTypeBaseMzBean.getData());
+                createView();
+            }
+        }
+    };
 
     private void createView(){
         List<NewsType> types = newsTypeList.getValue();
@@ -111,6 +114,14 @@ public class DynamicsFragment extends AbstractSupportFragment<MzNewsViewModel, F
 
     @Override
     public void onDestroy() {
+        if(viewModel.getNewsType() != null){
+            viewModel.getNewsType().removeObserver(observer);
+        }
+        newsTypeList = null;
+        if(pagerAdapter != null){
+            pagerAdapter.clear();
+            pagerAdapter = null;
+        }
         super.onDestroy();
     }
 }

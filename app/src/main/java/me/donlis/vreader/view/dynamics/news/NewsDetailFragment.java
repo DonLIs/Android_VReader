@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import me.donlis.vreader.R;
@@ -79,18 +80,21 @@ public class NewsDetailFragment extends AbstractSupportFragment<MzNewsViewModel,
     }
 
     private void getNewsInfo(){
-        viewModel.getNewsInfo(newId).observe(this, new Observer<BaseMzBean<NewsDetail>>() {
-            @Override
-            public void onChanged(BaseMzBean<NewsDetail> newsDetailBaseMzBean) {
-                if(newsDetailBaseMzBean == null){
-                    showFailView();
-                }else{
-                    showContentView();
-                    createView(newsDetailBaseMzBean.getData());
-                }
-            }
-        });
+        viewModel.getNewsInfo().observe(this, observer);
+        viewModel.loadNewsInfo(newId);
     }
+
+    private Observer<BaseMzBean<NewsDetail>> observer = new Observer<BaseMzBean<NewsDetail>>() {
+        @Override
+        public void onChanged(BaseMzBean<NewsDetail> newsDetailBaseMzBean) {
+            if(newsDetailBaseMzBean == null){
+                showFailView();
+            }else{
+                showContentView();
+                createView(newsDetailBaseMzBean.getData());
+            }
+        }
+    };
 
     private void createView(NewsDetail info){
         if(info == null){
@@ -159,4 +163,15 @@ public class NewsDetailFragment extends AbstractSupportFragment<MzNewsViewModel,
         adapter.setNewData(strings);
     }
 
+    @Override
+    public void onDestroy() {
+        if(viewModel.getNewsInfo() != null){
+            viewModel.getNewsInfo().removeObserver(observer);
+        }
+        if(adapter != null){
+            adapter.getData().clear();
+            adapter = null;
+        }
+        super.onDestroy();
+    }
 }

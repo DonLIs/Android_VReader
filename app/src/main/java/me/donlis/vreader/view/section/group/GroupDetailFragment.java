@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -98,37 +99,40 @@ public class GroupDetailFragment extends AbstractBaseFragment<GroupDetailViewMod
     }
 
     private void getList(){
-        viewModel.getData(groudId).observe(this, new Observer<BaseWanAndroidBean<DataBean>>() {
-            @Override
-            public void onChanged(BaseWanAndroidBean<DataBean> dataBeanBaseWanAndroidBean) {
-                if(bindView.swipeRefresh.isRefreshing()){
-                    bindView.swipeRefresh.setRefreshing(false);
-                }
+        viewModel.getData().observe(this, observer);
+        viewModel.loadData(groudId);
+    }
 
-                if(dataBeanBaseWanAndroidBean == null){
-                    if(viewModel.getPager() == 0){
-                        showFailView();
-                    }else{
-                        adapter.loadMoreEnd();
-                    }
+    private Observer<BaseWanAndroidBean<DataBean>> observer = new Observer<BaseWanAndroidBean<DataBean>>() {
+        @Override
+        public void onChanged(BaseWanAndroidBean<DataBean> dataBeanBaseWanAndroidBean) {
+            if(bindView.swipeRefresh.isRefreshing()){
+                bindView.swipeRefresh.setRefreshing(false);
+            }
+
+            if(dataBeanBaseWanAndroidBean == null){
+                if(viewModel.getPager() == 0){
+                    showFailView();
                 }else{
-                    List<ArticlesBean> datas = dataBeanBaseWanAndroidBean.getData().getDatas();
-                    if(datas == null || datas.size() ==0){
-                        adapter.loadMoreEnd();
-                    }else {
-                        if (viewModel.getPager() == 0) {
-                            showContentView();
-                            adapter.setNewData(datas);
-                            adapter.disableLoadMoreIfNotFullPage();
-                        } else {
-                            adapter.addData(datas);
-                        }
-                        adapter.loadMoreComplete();
+                    adapter.loadMoreEnd();
+                }
+            }else{
+                List<ArticlesBean> datas = dataBeanBaseWanAndroidBean.getData().getDatas();
+                if(datas == null || datas.size() ==0){
+                    adapter.loadMoreEnd();
+                }else {
+                    if (viewModel.getPager() == 0) {
+                        showContentView();
+                        adapter.setNewData(datas);
+                        adapter.disableLoadMoreIfNotFullPage();
+                    } else {
+                        adapter.addData(datas);
                     }
+                    adapter.loadMoreComplete();
                 }
             }
-        });
-    }
+        }
+    };
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -162,6 +166,9 @@ public class GroupDetailFragment extends AbstractBaseFragment<GroupDetailViewMod
 
     @Override
     public void onDestroy() {
+        if(viewModel.getData() != null){
+            viewModel.getData().removeObserver(observer);
+        }
         if(adapter != null){
             adapter.getData().clear();
             adapter = null;

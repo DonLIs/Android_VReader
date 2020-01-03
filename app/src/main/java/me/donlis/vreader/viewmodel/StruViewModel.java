@@ -16,13 +16,23 @@ import me.donlis.vreader.http.HttpClient;
 
 public class StruViewModel extends BaseViewModel {
 
+    private MutableLiveData<BaseWanAndroidBean<List<TreeBean>>> listData;
+
     public StruViewModel(@NonNull Application application) {
         super(application);
     }
 
     public MutableLiveData<BaseWanAndroidBean<List<TreeBean>>> getTree(){
-        final MutableLiveData<BaseWanAndroidBean<List<TreeBean>>> listData = new MutableLiveData<>();
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
+        return listData;
+    }
 
+    public void loadTree(){
+        if(listData == null) {
+            listData = new MutableLiveData<>();
+        }
         HttpClient.getWanAndroidServer().getTree()
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseWanAndroidBean<List<TreeBean>>>() {
@@ -46,7 +56,6 @@ public class StruViewModel extends BaseViewModel {
 
                     }
                 });
-        return listData;
     }
 
 }

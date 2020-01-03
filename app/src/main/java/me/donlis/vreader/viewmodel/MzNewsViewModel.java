@@ -22,12 +22,27 @@ public class MzNewsViewModel extends BaseViewModel {
 
     private int pager = DEFAULT_PAGER;
 
+    private MutableLiveData<BaseMzBean<List<NewsType>>> newsTypeListData;
+
+    private MutableLiveData<BaseMzBean<List<NewsItem>>> newsListData;
+
+    private MutableLiveData<BaseMzBean<NewsDetail>> newsInfo;
+
     public MzNewsViewModel(@NonNull Application application) {
         super(application);
     }
 
     public MutableLiveData<BaseMzBean<List<NewsType>>> getNewsType(){
-        final MutableLiveData<BaseMzBean<List<NewsType>>> listData = new MutableLiveData<>();
+        if(newsTypeListData == null) {
+            newsTypeListData = new MutableLiveData<>();
+        }
+        return newsTypeListData;
+    }
+
+    public void loadNewsType(){
+        if(newsTypeListData == null) {
+            newsTypeListData = new MutableLiveData<>();
+        }
         HttpClient.getMxnzpServer().getType()
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseMzBean<List<NewsType>>>() {
@@ -38,12 +53,12 @@ public class MzNewsViewModel extends BaseViewModel {
 
                     @Override
                     public void onNext(BaseMzBean<List<NewsType>> newsTypeBaseMzBean) {
-                        listData.setValue(newsTypeBaseMzBean);
+                        newsTypeListData.setValue(newsTypeBaseMzBean);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        listData.setValue(null);
+                        newsTypeListData.setValue(null);
                     }
 
                     @Override
@@ -51,11 +66,19 @@ public class MzNewsViewModel extends BaseViewModel {
 
                     }
                 });
-        return listData;
     }
 
-    public MutableLiveData<BaseMzBean<List<NewsItem>>> getNewsList(int typeId){
-        final MutableLiveData<BaseMzBean<List<NewsItem>>> listData = new MutableLiveData<>();
+    public MutableLiveData<BaseMzBean<List<NewsItem>>> getNewsList(){
+        if(newsListData == null) {
+            newsListData = new MutableLiveData<>();
+        }
+        return newsListData;
+    }
+
+    public void loadNewsList(int typeId){
+        if(newsListData == null) {
+            newsListData = new MutableLiveData<>();
+        }
         HttpClient.getMxnzpServer().getNews(typeId,pager)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseMzBean<List<NewsItem>>>() {
@@ -66,12 +89,12 @@ public class MzNewsViewModel extends BaseViewModel {
 
                     @Override
                     public void onNext(BaseMzBean<List<NewsItem>> newsItemBaseMzBean) {
-                        listData.setValue(newsItemBaseMzBean);
+                        newsListData.setValue(newsItemBaseMzBean);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        listData.setValue(null);
+                        newsListData.setValue(null);
                     }
 
                     @Override
@@ -79,11 +102,19 @@ public class MzNewsViewModel extends BaseViewModel {
 
                     }
                 });
-        return listData;
     }
 
-    public MutableLiveData<BaseMzBean<NewsDetail>> getNewsInfo(String newId){
-        final MutableLiveData<BaseMzBean<NewsDetail>> data = new MutableLiveData<>();
+    public MutableLiveData<BaseMzBean<NewsDetail>> getNewsInfo(){
+        if(newsInfo == null) {
+            newsInfo = new MutableLiveData<>();
+        }
+        return newsInfo;
+    }
+
+    public void loadNewsInfo(String newId){
+        if(newsInfo == null) {
+            newsInfo = new MutableLiveData<>();
+        }
         HttpClient.getMxnzpServer().getNewsDetail(newId)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseMzBean<NewsDetail>>() {
@@ -94,12 +125,12 @@ public class MzNewsViewModel extends BaseViewModel {
 
                     @Override
                     public void onNext(BaseMzBean<NewsDetail> newsDetailBaseMzBean) {
-                        data.setValue(newsDetailBaseMzBean);
+                        newsInfo.setValue(newsDetailBaseMzBean);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        data.setValue(null);
+                        newsInfo.setValue(null);
                     }
 
                     @Override
@@ -107,7 +138,6 @@ public class MzNewsViewModel extends BaseViewModel {
 
                     }
                 });
-        return data;
     }
 
     public int getPager() {

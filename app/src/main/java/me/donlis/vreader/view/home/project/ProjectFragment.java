@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -101,40 +102,46 @@ public class ProjectFragment extends AbstractBaseFragment<ProjectViewModel, Frag
     }
 
     private void getProjectList(){
-        viewModel.getProjectList().observe(this, new Observer<BaseWanAndroidBean<DataBean>>() {
-            @Override
-            public void onChanged(BaseWanAndroidBean<DataBean> homeListBean) {
-                if(bindView.swipeRefresh.isRefreshing()){
-                    bindView.swipeRefresh.setRefreshing(false);
-                }
+        viewModel.getProjectList().observe(this, observer);
+        viewModel.loadProjectList();
+    }
 
-                if(homeListBean == null){
-                    if(viewModel.getPager() == 0) {
-                        showFailView();
-                    }else{
-                        projectListAdapter.loadMoreEnd();
-                    }
+    private Observer<BaseWanAndroidBean<DataBean>> observer = new Observer<BaseWanAndroidBean<DataBean>>() {
+        @Override
+        public void onChanged(BaseWanAndroidBean<DataBean> homeListBean) {
+            if(bindView.swipeRefresh.isRefreshing()){
+                bindView.swipeRefresh.setRefreshing(false);
+            }
+
+            if(homeListBean == null){
+                if(viewModel.getPager() == 0) {
+                    showFailView();
+                }else{
+                    projectListAdapter.loadMoreEnd();
+                }
+            }else {
+                List<ArticlesBean> datas = homeListBean.getData().getDatas();
+                if(datas == null || datas.size() == 0){
+                    projectListAdapter.loadMoreEnd();
                 }else {
-                    List<ArticlesBean> datas = homeListBean.getData().getDatas();
-                    if(datas == null || datas.size() == 0){
-                        projectListAdapter.loadMoreEnd();
-                    }else {
-                        if (viewModel.getPager() == 0) {
-                            showContentView();
-                            projectListAdapter.setNewData(datas);
-                            projectListAdapter.disableLoadMoreIfNotFullPage();
-                        } else {
-                            projectListAdapter.addData(datas);
-                        }
-                        projectListAdapter.loadMoreComplete();
+                    if (viewModel.getPager() == 0) {
+                        showContentView();
+                        projectListAdapter.setNewData(datas);
+                        projectListAdapter.disableLoadMoreIfNotFullPage();
+                    } else {
+                        projectListAdapter.addData(datas);
                     }
+                    projectListAdapter.loadMoreComplete();
                 }
             }
-        });
-    }
+        }
+    };
 
     @Override
     public void onDestroy() {
+        if(viewModel.getProjectList() != null){
+            viewModel.getProjectList().removeObserver(observer);
+        }
         if(projectListAdapter != null){
             projectListAdapter.getData().clear();
             projectListAdapter = null;
