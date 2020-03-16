@@ -54,7 +54,7 @@ public class MainActivity extends AbstractToolbarLessActivity<BaseViewModel,Acti
         } else {
             //1500ms内双击退出应用
             if (System.currentTimeMillis() - firstPressedTime < 1500) {
-                finish();
+                finishAffinity();
             } else {
                 Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
                 firstPressedTime = System.currentTimeMillis();

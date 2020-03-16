@@ -171,6 +171,11 @@ public abstract class AbstractBaseActivity<VM extends BaseViewModel,VB extends V
         }
     }
 
+    protected void finishByAnimation(){
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
     @Override
     protected void onDestroy() {
         if(viewModel != null){

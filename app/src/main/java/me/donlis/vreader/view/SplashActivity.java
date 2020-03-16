@@ -11,14 +11,14 @@ import me.donlis.vreader.view.main.MainActivity;
 
 public class SplashActivity extends FragmentActivity {
 
-    private MyHandler handler;
+    private static Handler handler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        handler = new MyHandler();
+        handler = new Handler();
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -33,11 +33,8 @@ public class SplashActivity extends FragmentActivity {
 
     @Override
     protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
         handler = null;
         super.onDestroy();
-    }
-
-    private static class MyHandler extends Handler{
-
     }
 }
