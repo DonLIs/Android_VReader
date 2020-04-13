@@ -27,7 +27,7 @@ public class SplashActivity extends FragmentActivity {
                 overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 finish();
             }
-        }, 500);
+        }, 1000);
 
     }
 
